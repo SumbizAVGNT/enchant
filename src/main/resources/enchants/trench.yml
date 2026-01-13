@@ -1,49 +1,22 @@
-trench:
-  display: '{#f0f064}Траншея'
-  description: |-
-
-    &f Шанс вырыть траншею
-    &f размером 3x3 блока.
-  applies-to: Кирок, Лопат
-  type: MINING
-  group: ULTIMATE
-  applies:
-    - ALL_PICKAXE
-    - ALL_SPADE
-  levels:
-    '1':
-      chance: 13
-      effects:
-        - BREAK_BLOCK @Trench{r=3}
-    '2':
-      chance: 26
-      effects:
-        - BREAK_BLOCK @Trench{r=3}
-    '3':
-      chance: 36
-      effects:
-        - BREAK_BLOCK @Trench{r=3}
-    '4':
-      chance: 49
-      effects:
-        - BREAK_BLOCK @Trench{r=3}
-    '5':
-      chance: 59
-      effects:
-        - BREAK_BLOCK @Trench{r=3}
-    '6':
-      chance: 72
-      effects:
-        - BREAK_BLOCK @Trench{r=3}
-    '7':
-      chance: 85
-      effects:
-        - BREAK_BLOCK @Trench{r=3}
-    '8':
-      chance: 90
-      effects:
-        - BREAK_BLOCK @Trench{r=3}
-    '9':
-      chance: 100
-      effects:
-        - BREAK_BLOCK @Trench{r=3}
+id: trench
+name: Траншея
+description:
+  - "Шанс ускорить добычу блоков при раскопках."
+  - "Не совмещается с Жилакопателем."
+rarity: epic
+max-level: 9
+weight: 2
+enchant-slot-cost: 1
+supported-slots:
+  - HAND
+conflicts:
+  - veinminer
+effects:
+  trench_haste:
+    trigger: ON_MINE
+    recipient: SELF
+    type: FAST_DIGGING
+    amplifier: 1
+    duration: 80
+    chance: 0.25
+    cooldown: 60

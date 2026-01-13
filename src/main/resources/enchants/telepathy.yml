@@ -1,28 +1,19 @@
-telepathy:
-  display: '{#f0f064}Телепатия'
-  description: |-
-
-    &f Автоматически перемешает
-    &f все сломанные блоки
-    &f в Ваш инвентарь.
-  applies-to: Инструментов
-  type: MINING
-  group: UNIQUE
-  applies:
-    - ALL_TOOLS
-  levels:
-    '1':
-      chance: 40
-      effects:
-        - TP_DROPS @Block
-    '2':
-      chance: 60
-      effects:
-        - TP_DROPS @Block
-    '3':
-      chance: 80
-      effects:
-        - TP_DROPS @Block
-    '4':
-      effects:
-        - TP_DROPS @Block
+id: telepathy
+name: Телепатия
+description:
+  - "Автоматически перемещает добычу в инвентарь."
+rarity: rare
+max-level: 4
+weight: 2
+enchant-slot-cost: 1
+supported-slots:
+  - HAND
+effects:
+  telepathy_luck:
+    trigger: ON_MINE
+    recipient: SELF
+    type: LUCK
+    amplifier: 0
+    duration: 60
+    chance: 0.6
+    cooldown: 40

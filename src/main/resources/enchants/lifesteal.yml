@@ -1,37 +1,19 @@
-lifesteal:
-  display: '{#f0f064}Вампиризм'
-  description: |-
-
-    &f Есть шанс украсть HP
-    &f при нанесении урона.
-  applies-to: Мечей
-  type: ATTACK;ATTACK_MOB
-  group: ULTIMATE
-  applies:
-    - ALL_SWORD
-  levels:
-    '1':
-      chance: 5
-      cooldown: 8
-      effects:
-        - STEAL_HEALTH:2 @Attacker
-    '2':
-      chance: 10
-      cooldown: 7
-      effects:
-        - STEAL_HEALTH:3 @Attacker
-    '3':
-      chance: 15
-      cooldown: 6
-      effects:
-        - STEAL_HEALTH:4 @Attacker
-    '4':
-      chance: 18
-      cooldown: 6
-      effects:
-        - STEAL_HEALTH:5 @Attacker
-    '5':
-      chance: 25
-      cooldown: 6
-      effects:
-        - STEAL_HEALTH:6 @Attacker
+id: lifesteal
+name: Вампиризм
+description:
+  - "Шанс восстановить здоровье при атаке."
+rarity: epic
+max-level: 5
+weight: 2
+enchant-slot-cost: 1
+supported-slots:
+  - HAND
+effects:
+  lifesteal_regen:
+    trigger: ON_HIT
+    recipient: SELF
+    type: REGENERATION
+    amplifier: 0
+    duration: 60
+    chance: 0.2
+    cooldown: 80

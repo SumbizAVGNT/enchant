@@ -1,24 +1,19 @@
-jellylegs:
-  display: '{#f0f064}Желе-ноги'
-  description: |-
-
-    &f Шанс полностью погасить урон от падения.
-  applies-to: Ботинки
-  type: FALL_DAMAGE
-  group: LEGENDARY
-  settings:
-    showActionBar: true
-  applies:
-    - ALL_BOOTS
-  levels:
-    '1':
-      chance: 40
-      effects:
-        - CANCEL_EVENT
-    '2':
-      chance: 80
-      effects:
-        - CANCEL_EVENT
-    '3':
-      effects:
-        - CANCEL_EVENT
+id: jellylegs
+name: Желе-ноги
+description:
+  - "Снижает урон от падения, смягчая удар."
+rarity: legendary
+max-level: 3
+weight: 2
+enchant-slot-cost: 1
+supported-slots:
+  - FEET
+effects:
+  jelly_slow_falling:
+    trigger: ON_TAKE_DAMAGE
+    recipient: SELF
+    type: SLOW_FALLING
+    amplifier: 0
+    duration: 60
+    chance: 0.5
+    cooldown: 60

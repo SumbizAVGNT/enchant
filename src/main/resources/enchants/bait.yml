@@ -1,28 +1,19 @@
-bait:
-  display: '{#f0f064}Наживка'
-  description: |-
-
-    &f Шанс получить двойную добычу с рыбалки.
-  applies-to: Удочка
-  type: CATCH_FISH
-  group: LEGENDARY
-  settings:
-    showActionBar: true
-  applies:
-    - FISHING_ROD
-  levels:
-    '1':
-      chance: 15
-      cooldown: 10
-      effects:
-        - MORE_DROPS:1
-    '2':
-      chance: 18
-      cooldown: 10
-      effects:
-        - MORE_DROPS:1
-    '3':
-      chance: 26
-      cooldown: 10
-      effects:
-        - MORE_DROPS:1
+id: bait
+name: Наживка
+description:
+  - "Увеличивает удачу при рыбалке."
+rarity: legendary
+max-level: 3
+weight: 2
+enchant-slot-cost: 1
+supported-slots:
+  - HAND
+effects:
+  bait_luck:
+    trigger: ON_FISH
+    recipient: SELF
+    type: LUCK
+    amplifier: 1
+    duration: 100
+    chance: 0.35
+    cooldown: 80

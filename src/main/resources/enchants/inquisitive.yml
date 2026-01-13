@@ -1,32 +1,19 @@
-inquisitive:
-  display: '{#f0f064}Любознательность'
-  description: |-
-
-    &f Повышенное получение EXP
-    &f за любых убийство мобов.
-  applies-to: Мечей
-  type: KILL_MOB
-  group: ULTIMATE
-  applies:
-    - ALL_SWORD
-  levels:
-    '1':
-      chance: 100
-      cooldown: 0
-      effects:
-        - EXP:<math>%exp% * (1.0 + 0.25 * %level%)</math> @Victim
-    '2':
-      chance: 100
-      cooldown: 0
-      effects:
-        - EXP:<math>%exp% * (1.0 + 0.25 * %level%)</math> @Victim
-    '3':
-      chance: 100
-      cooldown: 0
-      effects:
-        - EXP:<math>%exp% * (1.0 + 0.25 * %level%)</math> @Victim
-    '4':
-      chance: 100
-      cooldown: 0
-      effects:
-        - EXP:<math>%exp% * (1.0 + 0.25 * %level%)</math> @Victim
+id: inquisitive
+name: Любознательность
+description:
+  - "Даёт дополнительную удачу после убийства мобов."
+rarity: epic
+max-level: 4
+weight: 2
+enchant-slot-cost: 1
+supported-slots:
+  - HAND
+effects:
+  inquisitive_luck:
+    trigger: ON_HIT
+    recipient: SELF
+    type: LUCK
+    amplifier: 0
+    duration: 80
+    chance: 0.5
+    cooldown: 40

@@ -1,40 +1,18 @@
-perish:
-  display: '{#f0f064}Тлен'
-  description: |-
-
-    &f Шанс наложить эффект иссушения.
-  applies-to: Лук, Арбалет, Трезубец
-  type: SHOOT;SHOOT_MOB
-  group: LEGENDARY
-  settings:
-    showActionBar: true
-  applies:
-    - TRIDENT
-    - BOW
-    - CROSSBOW
-  levels:
-    '1':
-      chance: 11
-      cooldown: 3
-      effects:
-        - POTION:WITHER:0:60 @Victim
-    '2':
-      chance: 21
-      cooldown: 3
-      effects:
-        - POTION:WITHER:0:100 @Victim
-    '3':
-      chance: 25
-      cooldown: 3
-      effects:
-        - POTION:WITHER:0:140 @Victim
-    '4':
-      chance: 34
-      cooldown: 3
-      effects:
-        - POTION:WITHER:1:60 @Victim
-    '5':
-      chance: 45
-      cooldown: 3
-      effects:
-        - POTION:WITHER:1:100 @Victim
+id: perish
+name: Тлен
+description:
+  - "Шанс наложить иссушение на цель."
+rarity: legendary
+max-level: 5
+weight: 2
+enchant-slot-cost: 1
+supported-slots:
+  - HAND
+effects:
+  perish_wither:
+    trigger: ON_HIT
+    type: WITHER
+    amplifier: 0
+    duration: 80
+    chance: 0.25
+    cooldown: 60

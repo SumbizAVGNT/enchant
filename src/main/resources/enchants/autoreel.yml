@@ -1,28 +1,19 @@
-autoreel:
-  display: '{#f0f064}Авто-подсечка'
-  description: |-
-
-    &f Автоматически подсекает удочку при поклёвке.
-  applies-to: Удочка
-  type: BITE_HOOK
-  group: LEGENDARY
-  settings:
-    showActionBar: true
-  applies:
-    - FISHING_ROD
-  levels:
-    '1':
-      chance: 25
-      effects:
-        - AUTO_REEL
-    '2':
-      chance: 50
-      effects:
-        - AUTO_REEL
-    '3':
-      chance: 75
-      effects:
-        - AUTO_REEL
-    '4':
-      effects:
-        - AUTO_REEL
+id: autoreel
+name: Авто-подсечка
+description:
+  - "Шанс получить бонусный эффект при рыбалке."
+rarity: legendary
+max-level: 4
+weight: 2
+enchant-slot-cost: 1
+supported-slots:
+  - HAND
+effects:
+  reel_luck:
+    trigger: ON_FISH
+    recipient: SELF
+    type: LUCK
+    amplifier: 0
+    duration: 100
+    chance: 0.5
+    cooldown: 40

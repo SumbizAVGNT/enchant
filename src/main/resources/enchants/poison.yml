@@ -1,27 +1,18 @@
-poison:
-  display: '{#f0f064}Яд'
-  description: |-
-
-    &f Шанс наложить эффект отравления.
-  applies-to: Мечи, Топоры
-  type: ATTACK;ATTACK_MOB
-  group: LEGENDARY
-  applies:
-    - ALL_SWORD
-    - ALL_AXE
-  levels:
-    '1':
-      chance: 12
-      cooldown: 2
-      effects:
-        - POTION:POISON:0:80 @Victim
-    '2':
-      chance: 23
-      cooldown: 2
-      effects:
-        - POTION:POISON:0:120 @Victim
-    '3':
-      chance: 35
-      cooldown: 2
-      effects:
-        - POTION:POISON:1:80 @Victim
+id: poison
+name: Яд
+description:
+  - "Шанс наложить отравление на цель."
+rarity: legendary
+max-level: 3
+weight: 2
+enchant-slot-cost: 1
+supported-slots:
+  - HAND
+effects:
+  poison_effect:
+    trigger: ON_HIT
+    type: POISON
+    amplifier: 0
+    duration: 100
+    chance: 0.3
+    cooldown: 40

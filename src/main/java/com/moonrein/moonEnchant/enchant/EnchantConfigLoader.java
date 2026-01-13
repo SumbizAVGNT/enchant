@@ -3,6 +3,7 @@ package com.moonrein.moonEnchant.enchant;
 import com.moonrein.moonEnchant.config.EnchantSettings;
 import com.moonrein.moonEnchant.model.AttributeModifierSpec;
 import com.moonrein.moonEnchant.model.EffectSpec;
+import com.moonrein.moonEnchant.model.EffectRecipient;
 import com.moonrein.moonEnchant.model.EnchantDefinition;
 import com.moonrein.moonEnchant.model.EnchantRarity;
 import com.moonrein.moonEnchant.model.EnchantTableRequirement;
@@ -114,6 +115,9 @@ public class EnchantConfigLoader {
             }
             EnchantTrigger trigger = readEnum(file, "effects." + key + ".trigger",
                 entry.getString("trigger", "PASSIVE"), EnchantTrigger.class, EnchantTrigger.PASSIVE);
+            EffectRecipient recipient = readEnum(file, "effects." + key + ".recipient",
+                entry.getString("recipient", defaultRecipient(trigger).name()), EffectRecipient.class,
+                defaultRecipient(trigger));
             String typeName = entry.getString("type", "SPEED");
             PotionEffectType type = PotionEffectType.getByName(typeName);
             if (type == null) {
@@ -127,9 +131,16 @@ public class EnchantConfigLoader {
             boolean ambient = entry.getBoolean("ambient", true);
             boolean particles = entry.getBoolean("particles", true);
             boolean icon = entry.getBoolean("icon", true);
-            result.add(new EffectSpec(trigger, type, amplifier, duration, chance, cooldown, ambient, particles, icon));
+            result.add(new EffectSpec(trigger, recipient, type, amplifier, duration, chance, cooldown, ambient, particles, icon));
         }
         return result;
+    }
+
+    private EffectRecipient defaultRecipient(EnchantTrigger trigger) {
+        return switch (trigger) {
+            case ON_HIT, ON_PROJECTILE_HIT -> EffectRecipient.TARGET;
+            default -> EffectRecipient.SELF;
+        };
     }
 
     private EnchantTableRequirement loadTableRequirement(YamlConfiguration config, EnchantRarity rarity) {
