@@ -56,7 +56,7 @@ public final class MoonEnchant extends JavaPlugin {
 
         EnchantSettingsLoader settingsLoader = new EnchantSettingsLoader();
         EnchantSettings settings = settingsLoader.load(settingsFile);
-        EnchantConfigLoader loader = new EnchantConfigLoader(settings);
+        EnchantConfigLoader loader = new EnchantConfigLoader(settings, getLogger());
         registry = new EnchantRegistry();
         for (EnchantDefinition definition : loader.loadAll(enchantFolder)) {
             registry.register(definition);

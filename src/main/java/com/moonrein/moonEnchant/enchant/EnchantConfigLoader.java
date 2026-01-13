@@ -14,7 +14,9 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
+import java.util.logging.Logger;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.configuration.ConfigurationSection;
@@ -24,9 +26,11 @@ import org.bukkit.potion.PotionEffectType;
 
 public class EnchantConfigLoader {
     private final EnchantSettings settings;
+    private final Logger logger;
 
-    public EnchantConfigLoader(EnchantSettings settings) {
+    public EnchantConfigLoader(EnchantSettings settings, Logger logger) {
         this.settings = settings;
+        this.logger = logger;
     }
 
     public List<EnchantDefinition> loadAll(File folder) {
@@ -49,17 +53,21 @@ public class EnchantConfigLoader {
         String id = config.getString("id", file.getName().replace(".yml", ""));
         String name = config.getString("name", id);
         List<String> description = config.getStringList("description");
-        EnchantRarity rarity = EnchantRarity.valueOf(config.getString("rarity", "COMMON").toUpperCase());
-        int maxLevel = config.getInt("max-level", 1);
-        int weight = config.getInt("weight", 1);
-        int enchantSlotCost = config.getInt("enchant-slot-cost", 1);
+        EnchantRarity rarity = readEnum(file, "rarity", config.getString("rarity", "COMMON"),
+            EnchantRarity.class, EnchantRarity.COMMON);
+        int maxLevel = readPositiveInt(file, "max-level", config.getInt("max-level", 1), 1);
+        int weight = readPositiveInt(file, "weight", config.getInt("weight", 1), 1);
+        int enchantSlotCost = readPositiveInt(file, "enchant-slot-cost", config.getInt("enchant-slot-cost", 1), 1);
         Set<EquipmentSlot> slots = EnumSet.noneOf(EquipmentSlot.class);
         for (String slot : config.getStringList("supported-slots")) {
-            slots.add(EquipmentSlot.valueOf(slot.toUpperCase()));
+            EquipmentSlot resolved = readEnum(file, "supported-slots", slot, EquipmentSlot.class, null);
+            if (resolved != null) {
+                slots.add(resolved);
+            }
         }
         Set<String> conflicts = new HashSet<>(config.getStringList("conflicts"));
-        List<AttributeModifierSpec> attributes = loadAttributes(config.getConfigurationSection("attributes"), id);
-        List<EffectSpec> effects = loadEffects(config.getConfigurationSection("effects"));
+        List<AttributeModifierSpec> attributes = loadAttributes(file, config.getConfigurationSection("attributes"), id);
+        List<EffectSpec> effects = loadEffects(file, config.getConfigurationSection("effects"));
         double heatPerProc = config.getDouble("heat.per-proc", 0.0);
         double heatDecay = config.getDouble("heat.decay-per-second", 0.0);
         double heatMax = config.getDouble("heat.max", 0.0);
@@ -68,7 +76,7 @@ public class EnchantConfigLoader {
             enchantSlotCost, attributes, effects, heatPerProc, heatDecay, heatMax, tableRequirement);
     }
 
-    private List<AttributeModifierSpec> loadAttributes(ConfigurationSection section, String id) {
+    private List<AttributeModifierSpec> loadAttributes(File file, ConfigurationSection section, String id) {
         List<AttributeModifierSpec> result = new ArrayList<>();
         if (section == null) {
             return result;
@@ -78,19 +86,23 @@ public class EnchantConfigLoader {
             if (entry == null) {
                 continue;
             }
-            Attribute attribute = Attribute.valueOf(entry.getString("attribute", "GENERIC_ATTACK_DAMAGE").toUpperCase());
+            Attribute attribute = readEnum(file, "attributes." + key + ".attribute",
+                entry.getString("attribute", "GENERIC_ATTACK_DAMAGE"), Attribute.class, Attribute.GENERIC_ATTACK_DAMAGE);
             double amount = entry.getDouble("amount", 0.0);
-            AttributeModifier.Operation operation = AttributeModifier.Operation.valueOf(
-                entry.getString("operation", "ADD_NUMBER").toUpperCase());
-            EquipmentSlot slot = EquipmentSlot.valueOf(entry.getString("slot", "HAND").toUpperCase());
-            StackRule stackRule = StackRule.valueOf(entry.getString("stack-rule", "MAX_LEVEL").toUpperCase());
+            AttributeModifier.Operation operation = readEnum(file, "attributes." + key + ".operation",
+                entry.getString("operation", "ADD_NUMBER"), AttributeModifier.Operation.class,
+                AttributeModifier.Operation.ADD_NUMBER);
+            EquipmentSlot slot = readEnum(file, "attributes." + key + ".slot",
+                entry.getString("slot", "HAND"), EquipmentSlot.class, EquipmentSlot.HAND);
+            StackRule stackRule = readEnum(file, "attributes." + key + ".stack-rule",
+                entry.getString("stack-rule", "MAX_LEVEL"), StackRule.class, StackRule.MAX_LEVEL);
             AttributeModifierSpec spec = AttributeModifierFactory.create(id, key, attribute, amount, operation, slot, stackRule);
             result.add(spec);
         }
         return result;
     }
 
-    private List<EffectSpec> loadEffects(ConfigurationSection section) {
+    private List<EffectSpec> loadEffects(File file, ConfigurationSection section) {
         List<EffectSpec> result = new ArrayList<>();
         if (section == null) {
             return result;
@@ -100,9 +112,12 @@ public class EnchantConfigLoader {
             if (entry == null) {
                 continue;
             }
-            EnchantTrigger trigger = EnchantTrigger.valueOf(entry.getString("trigger", "PASSIVE").toUpperCase());
-            PotionEffectType type = PotionEffectType.getByName(entry.getString("type", "SPEED"));
+            EnchantTrigger trigger = readEnum(file, "effects." + key + ".trigger",
+                entry.getString("trigger", "PASSIVE"), EnchantTrigger.class, EnchantTrigger.PASSIVE);
+            String typeName = entry.getString("type", "SPEED");
+            PotionEffectType type = PotionEffectType.getByName(typeName);
             if (type == null) {
+                warn(file, "effects." + key + ".type", "Unknown potion effect: " + typeName);
                 continue;
             }
             int amplifier = entry.getInt("amplifier", 0);
@@ -128,5 +143,45 @@ public class EnchantConfigLoader {
         int maxLevel = section.getInt("max-level", base.maxLevel());
         int minBookshelves = section.getInt("min-bookshelves", base.minBookshelves());
         return new EnchantTableRequirement(enabled, minLevel, maxLevel, minBookshelves);
+    }
+
+    private int readPositiveInt(File file, String path, int value, int fallback) {
+        if (value < 1) {
+            warn(file, path, "Expected a positive integer, got: " + value);
+            return fallback;
+        }
+        return value;
+    }
+
+    private <T extends Enum<T>> T readEnum(File file, String path, String value, Class<T> type, T fallback) {
+        if (value == null) {
+            warn(file, path, "Missing value, expected one of " + enumOptions(type));
+            return fallback;
+        }
+        try {
+            return Enum.valueOf(type, value.trim().toUpperCase(Locale.ROOT));
+        } catch (IllegalArgumentException ex) {
+            warn(file, path, "Invalid value '" + value + "', expected one of " + enumOptions(type));
+            return fallback;
+        }
+    }
+
+    private String enumOptions(Class<? extends Enum<?>> type) {
+        Enum<?>[] values = type.getEnumConstants();
+        if (values == null) {
+            return "[]";
+        }
+        List<String> names = new ArrayList<>();
+        for (Enum<?> value : values) {
+            names.add(value.name());
+        }
+        return names.toString();
+    }
+
+    private void warn(File file, String path, String message) {
+        if (logger == null) {
+            return;
+        }
+        logger.warning("Enchant config issue in " + file.getName() + " -> " + path + ": " + message);
     }
 }
