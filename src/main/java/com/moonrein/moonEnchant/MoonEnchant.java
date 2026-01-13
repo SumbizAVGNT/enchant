@@ -24,7 +24,31 @@ public final class MoonEnchant extends JavaPlugin {
     public void onEnable() {
         saveDefaultConfig();
         File enchantFolder = new File(getDataFolder(), "enchants");
-        saveResource("enchants/rift_edge.yml", false);
+        String[] defaultEnchants = {
+            "enchants/rift_edge.yml",
+            "enchants/autoreel.yml",
+            "enchants/replanter.yml",
+            "enchants/twinge.yml",
+            "enchants/jellylegs.yml",
+            "enchants/experience.yml",
+            "enchants/veinminer.yml",
+            "enchants/hook.yml",
+            "enchants/bait.yml",
+            "enchants/poison.yml",
+            "enchants/springs.yml",
+            "enchants/perish.yml",
+            "enchants/ambit.yml",
+            "enchants/critical.yml",
+            "enchants/inquisitive.yml",
+            "enchants/lifesteal.yml",
+            "enchants/overload.yml",
+            "enchants/trench.yml",
+            "enchants/telepathy.yml",
+            "enchants/smelting.yml"
+        };
+        for (String resource : defaultEnchants) {
+            saveResource(resource, false);
+        }
 
         EnchantConfigLoader loader = new EnchantConfigLoader();
         registry = new EnchantRegistry();

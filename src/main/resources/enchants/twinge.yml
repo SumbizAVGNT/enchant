@@ -1,0 +1,58 @@
+twinge:
+  display: '{#f0f064}Кровопускание'
+  description: |-
+
+    &f Заставляет врага истекать кровью,
+    &f если ударить в ближнем бою.
+  applies-to: Трезубец
+  type: ATTACK
+  group: LEGENDARY
+  settings:
+    showActionBar: true
+  applies:
+    - TRIDENT
+  levels:
+    '1':
+      chance: 11
+      cooldown: 3
+      effects:
+        - POTION:SLOW:0:100 @Victim
+        - DO_HARM:<random number>1-3</random number> @Victim
+        - MESSAGE:§4Вы истекаете кровью! @Victim
+        - WAIT:20
+        - DO_HARM:<random number>1-3</random number> @Victim
+        - WAIT:20
+        - DO_HARM:<random number>1-3</random number> @Victim
+    '2':
+      chance: 18
+      cooldown: 3
+      effects:
+        - POTION:SLOW:0:100 @Victim
+        - DO_HARM:<random number>1-3</random number> @Victim
+        - MESSAGE:§4Вы истекаете кровью! @Victim
+        - WAIT:20
+        - DO_HARM:<random number>1-3</random number> @Victim
+        - WAIT:20
+        - DO_HARM:<random number>1-3</random number> @Victim
+    '3':
+      chance: 25
+      cooldown: 4
+      effects:
+        - POTION:SLOW:0:100 @Victim
+        - DO_HARM:<random number>1-3</random number> @Victim
+        - MESSAGE:§4Вы истекаете кровью! @Victim
+        - WAIT:20
+        - DO_HARM:<random number>1-3</random number> @Victim
+        - WAIT:20
+        - DO_HARM:<random number>1-3</random number> @Victim
+    '4':
+      chance: 36
+      cooldown: 5
+      effects:
+        - POTION:SLOW:0:100 @Victim
+        - DO_HARM:<random number>1-3</random number> @Victim
+        - MESSAGE:§4Вы истекаете кровью! @Victim
+        - WAIT:20
+        - DO_HARM:<random number>1-3</random number> @Victim
+        - WAIT:20
+        - DO_HARM:<random number>1-3</random number> @Victim

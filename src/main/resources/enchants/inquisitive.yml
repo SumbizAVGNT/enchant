@@ -1,0 +1,32 @@
+inquisitive:
+  display: '{#f0f064}Любознательность'
+  description: |-
+
+    &f Повышенное получение EXP
+    &f за любых убийство мобов.
+  applies-to: Мечей
+  type: KILL_MOB
+  group: ULTIMATE
+  applies:
+    - ALL_SWORD
+  levels:
+    '1':
+      chance: 100
+      cooldown: 0
+      effects:
+        - EXP:<math>%exp% * (1.0 + 0.25 * %level%)</math> @Victim
+    '2':
+      chance: 100
+      cooldown: 0
+      effects:
+        - EXP:<math>%exp% * (1.0 + 0.25 * %level%)</math> @Victim
+    '3':
+      chance: 100
+      cooldown: 0
+      effects:
+        - EXP:<math>%exp% * (1.0 + 0.25 * %level%)</math> @Victim
+    '4':
+      chance: 100
+      cooldown: 0
+      effects:
+        - EXP:<math>%exp% * (1.0 + 0.25 * %level%)</math> @Victim

@@ -1,0 +1,27 @@
+critical:
+  display: '{#f0f064}Критический Урон'
+  description: |-
+
+    &f Увеличение урона, наносимого
+    &f критическим ударом.
+  applies-to: Мечей
+  type: ATTACK_MOB;ATTACK
+  group: ULTIMATE
+  applies:
+    - ALL_SWORD
+  levels:
+    '1':
+      conditions:
+        - '%is critical% = true : %allow%'
+      effects:
+        - INCREASE_DAMAGE:30
+    '2':
+      conditions:
+        - '%is critical% = true : %allow%'
+      effects:
+        - INCREASE_DAMAGE:40
+    '3':
+      conditions:
+        - '%is critical% = true : %allow%'
+      effects:
+        - INCREASE_DAMAGE:50

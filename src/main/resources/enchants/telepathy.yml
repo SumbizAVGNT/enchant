@@ -1,0 +1,28 @@
+telepathy:
+  display: '{#f0f064}Телепатия'
+  description: |-
+
+    &f Автоматически перемешает
+    &f все сломанные блоки
+    &f в Ваш инвентарь.
+  applies-to: Инструментов
+  type: MINING
+  group: UNIQUE
+  applies:
+    - ALL_TOOLS
+  levels:
+    '1':
+      chance: 40
+      effects:
+        - TP_DROPS @Block
+    '2':
+      chance: 60
+      effects:
+        - TP_DROPS @Block
+    '3':
+      chance: 80
+      effects:
+        - TP_DROPS @Block
+    '4':
+      effects:
+        - TP_DROPS @Block
