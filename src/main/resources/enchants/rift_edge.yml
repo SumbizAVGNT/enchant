@@ -44,3 +44,24 @@ effects:
     ambient: true
     particles: false
     icon: false
+levels:
+  1:
+    effects:
+      - arcane_burst
+      - stance_glow
+  2:
+    effects:
+      - arcane_burst
+      - stance_glow
+  3:
+    effects:
+      - arcane_burst
+      - stance_glow
+  4:
+    effects:
+      - arcane_burst
+      - stance_glow
+  5:
+    effects:
+      - arcane_burst
+      - stance_glow

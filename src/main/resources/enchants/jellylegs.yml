@@ -17,3 +17,13 @@ effects:
     duration: 60
     chance: 0.5
     cooldown: 60
+levels:
+  1:
+    effects:
+      - jelly_slow_falling
+  2:
+    effects:
+      - jelly_slow_falling
+  3:
+    effects:
+      - jelly_slow_falling

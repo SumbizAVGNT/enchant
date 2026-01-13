@@ -16,3 +16,19 @@ effects:
     duration: 80
     chance: 0.25
     cooldown: 60
+levels:
+  1:
+    effects:
+      - perish_wither
+  2:
+    effects:
+      - perish_wither
+  3:
+    effects:
+      - perish_wither
+  4:
+    effects:
+      - perish_wither
+  5:
+    effects:
+      - perish_wither

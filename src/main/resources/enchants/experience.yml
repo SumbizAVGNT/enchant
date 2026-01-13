@@ -17,3 +17,19 @@ effects:
     duration: 80
     chance: 0.4
     cooldown: 20
+levels:
+  1:
+    effects:
+      - mining_luck
+  2:
+    effects:
+      - mining_luck
+  3:
+    effects:
+      - mining_luck
+  4:
+    effects:
+      - mining_luck
+  5:
+    effects:
+      - mining_luck

@@ -17,3 +17,13 @@ effects:
     duration: 120
     chance: 0.75
     cooldown: 40
+levels:
+  1:
+    effects:
+      - hook_luck
+  2:
+    effects:
+      - hook_luck
+  3:
+    effects:
+      - hook_luck

@@ -17,3 +17,13 @@ effects:
     duration: 100
     chance: 0.3
     cooldown: 60
+levels:
+  1:
+    effects:
+      - smelting_fire_resistance
+  2:
+    effects:
+      - smelting_fire_resistance
+  3:
+    effects:
+      - smelting_fire_resistance

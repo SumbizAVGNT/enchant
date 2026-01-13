@@ -17,3 +17,7 @@ effects:
     duration: 20
     chance: 0.2
     cooldown: 80
+levels:
+  1:
+    effects:
+      - replanter_saturation

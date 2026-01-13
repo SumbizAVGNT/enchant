@@ -16,3 +16,16 @@ effects:
     duration: 80
     chance: 0.25
     cooldown: 60
+levels:
+  1:
+    effects:
+      - twinge_slow
+  2:
+    effects:
+      - twinge_slow
+  3:
+    effects:
+      - twinge_slow
+  4:
+    effects:
+      - twinge_slow

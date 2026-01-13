@@ -17,3 +17,13 @@ effects:
     duration: 100
     chance: 0.35
     cooldown: 80
+levels:
+  1:
+    effects:
+      - bait_luck
+  2:
+    effects:
+      - bait_luck
+  3:
+    effects:
+      - bait_luck

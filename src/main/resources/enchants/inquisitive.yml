@@ -17,3 +17,16 @@ effects:
     duration: 80
     chance: 0.5
     cooldown: 40
+levels:
+  1:
+    effects:
+      - inquisitive_luck
+  2:
+    effects:
+      - inquisitive_luck
+  3:
+    effects:
+      - inquisitive_luck
+  4:
+    effects:
+      - inquisitive_luck

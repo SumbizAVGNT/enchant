@@ -4,6 +4,7 @@ import java.util.Objects;
 import org.bukkit.potion.PotionEffectType;
 
 public class EffectSpec {
+    private final String key;
     private final EnchantTrigger trigger;
     private final EffectRecipient recipient;
     private final PotionEffectType type;
@@ -15,9 +16,10 @@ public class EffectSpec {
     private final boolean particles;
     private final boolean icon;
 
-    public EffectSpec(EnchantTrigger trigger, EffectRecipient recipient, PotionEffectType type, int amplifier,
+    public EffectSpec(String key, EnchantTrigger trigger, EffectRecipient recipient, PotionEffectType type, int amplifier,
                       int durationTicks, double chance, long cooldownTicks, boolean ambient, boolean particles,
                       boolean icon) {
+        this.key = Objects.requireNonNull(key, "key");
         this.trigger = Objects.requireNonNull(trigger, "trigger");
         this.recipient = Objects.requireNonNull(recipient, "recipient");
         this.type = Objects.requireNonNull(type, "type");
@@ -32,6 +34,10 @@ public class EffectSpec {
 
     public EnchantTrigger getTrigger() {
         return trigger;
+    }
+
+    public String getKey() {
+        return key;
     }
 
     public EffectRecipient getRecipient() {

@@ -20,3 +20,31 @@ effects:
     duration: 80
     chance: 0.25
     cooldown: 60
+levels:
+  1:
+    effects:
+      - trench_haste
+  2:
+    effects:
+      - trench_haste
+  3:
+    effects:
+      - trench_haste
+  4:
+    effects:
+      - trench_haste
+  5:
+    effects:
+      - trench_haste
+  6:
+    effects:
+      - trench_haste
+  7:
+    effects:
+      - trench_haste
+  8:
+    effects:
+      - trench_haste
+  9:
+    effects:
+      - trench_haste

@@ -5,6 +5,7 @@ import com.moonrein.moonEnchant.model.AttributeModifierSpec;
 import com.moonrein.moonEnchant.model.EffectRecipient;
 import com.moonrein.moonEnchant.model.EffectSpec;
 import com.moonrein.moonEnchant.model.EnchantDefinition;
+import com.moonrein.moonEnchant.model.EnchantLevelConfig;
 import com.moonrein.moonEnchant.model.EnchantTrigger;
 import com.moonrein.moonEnchant.model.StackRule;
 import com.moonrein.moonEnchant.util.ItemEnchantStorage;
@@ -173,6 +174,27 @@ public class EnchantService {
         };
     }
 
+    private int resolveMaxLevel(List<EnchantLevelSlot> levels) {
+        return levels.stream().mapToInt(EnchantLevelSlot::level).max().orElse(0);
+    }
+
+    private EnchantLevelConfig resolveLevelConfig(EnchantDefinition definition, int level) {
+        if (level < 1 || definition.getLevelConfigs().isEmpty()) {
+            return null;
+        }
+        EnchantLevelConfig direct = definition.getLevelConfigs().get(level);
+        if (direct != null) {
+            return direct;
+        }
+        int closest = -1;
+        for (Integer configured : definition.getLevelConfigs().keySet()) {
+            if (configured <= level && configured > closest) {
+                closest = configured;
+            }
+        }
+        return closest > 0 ? definition.getLevelConfigs().get(closest) : null;
+    }
+
     private Map<String, List<EnchantLevelSlot>> scanEquippedEnchantments(Player player) {
         Map<String, List<EnchantLevelSlot>> result = new HashMap<>();
         Map<EquipmentSlot, ItemStack> items = new EnumMap<>(EquipmentSlot.class);
@@ -213,7 +235,15 @@ public class EnchantService {
             if (definition == null) {
                 continue;
             }
+            int effectiveLevel = resolveMaxLevel(entry.getValue());
+            EnchantLevelConfig levelConfig = resolveLevelConfig(definition, effectiveLevel);
+            List<String> allowedEffects = levelConfig != null && !levelConfig.effects().isEmpty()
+                ? levelConfig.effects()
+                : null;
             for (EffectSpec effect : definition.getEffects()) {
+                if (allowedEffects != null && !allowedEffects.contains(effect.getKey())) {
+                    continue;
+                }
                 if (effect.getTrigger() != trigger) {
                     continue;
                 }
