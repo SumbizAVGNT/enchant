@@ -17,6 +17,14 @@ public class PlayerEnchantState {
         this.equippedEnchantLevels = equippedEnchantLevels;
     }
 
+    public Map<String, Long> getCooldownSnapshot() {
+        return new HashMap<>(cooldowns);
+    }
+
+    public Map<String, Double> getHeatSnapshot() {
+        return new HashMap<>(heat);
+    }
+
     public boolean isOnCooldown(String key) {
         Long until = cooldowns.get(key);
         return until != null && until > System.currentTimeMillis();
