@@ -8,12 +8,17 @@ import com.moonrein.moonEnchant.model.EnchantDefinition;
 import com.moonrein.moonEnchant.service.EnchantService;
 import com.moonrein.moonEnchant.util.ItemEnchantStorage;
 import java.io.File;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class MoonEnchant extends JavaPlugin {
     private EnchantRegistry registry;
     private EnchantService enchantService;
+    private ExecutorService enchantExecutor;
 
     @Override
     public void onEnable() {
@@ -28,7 +33,11 @@ public final class MoonEnchant extends JavaPlugin {
         }
 
         ItemEnchantStorage storage = new ItemEnchantStorage(new NamespacedKey(this, "custom_enchants"));
-        enchantService = new EnchantService(registry, storage);
+        enchantExecutor = Executors.newFixedThreadPool(
+            Math.max(2, Runtime.getRuntime().availableProcessors() / 2),
+            new EnchantThreadFactory()
+        );
+        enchantService = new EnchantService(this, registry, storage, enchantExecutor);
 
         EnchantListener listener = new EnchantListener(enchantService);
         getServer().getPluginManager().registerEvents(listener, this);
@@ -44,6 +53,20 @@ public final class MoonEnchant extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        if (enchantExecutor != null) {
+            enchantExecutor.shutdownNow();
+        }
+    }
+
+    private static class EnchantThreadFactory implements ThreadFactory {
+        private final AtomicInteger index = new AtomicInteger(1);
+
+        @Override
+        public Thread newThread(Runnable runnable) {
+            Thread thread = new Thread(runnable);
+            thread.setName("moonEnchant-worker-" + index.getAndIncrement());
+            thread.setDaemon(true);
+            return thread;
+        }
     }
 }
