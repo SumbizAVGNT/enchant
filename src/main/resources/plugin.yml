@@ -2,3 +2,11 @@ name: MoonEnchant
 version: '1.0-SNAPSHOT'
 main: com.moonrein.moonEnchant.MoonEnchant
 api-version: '1.21'
+commands:
+  ce:
+    description: Custom enchantments control
+    usage: /ce <give|list|reload|debug|test>
+    permission: moonenchant.admin
+permissions:
+  moonenchant.admin:
+    default: op

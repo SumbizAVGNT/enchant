@@ -1,0 +1,46 @@
+id: rift_edge
+name: Rift Edge
+description:
+  - "Резонирует с разрывом пространства."
+  - "Проки перегревают клинок."
+rarity: epic
+max-level: 5
+weight: 3
+enchant-slot-cost: 2
+supported-slots:
+  - HAND
+conflicts:
+  - sharpness
+  - smite
+heat:
+  per-proc: 0.25
+  decay-per-second: 0.5
+  max: 2.0
+attributes:
+  damage:
+    attribute: GENERIC_ATTACK_DAMAGE
+    amount: 0.6
+    operation: ADD_NUMBER
+    slot: HAND
+    stack-rule: MAX_LEVEL
+effects:
+  arcane_burst:
+    trigger: ON_HIT
+    type: SLOW
+    amplifier: 0
+    duration: 40
+    chance: 0.25
+    cooldown: 80
+    ambient: true
+    particles: true
+    icon: false
+  stance_glow:
+    trigger: PASSIVE
+    type: DAMAGE_RESISTANCE
+    amplifier: 0
+    duration: 40
+    chance: 1.0
+    cooldown: 0
+    ambient: true
+    particles: false
+    icon: false
