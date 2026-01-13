@@ -18,18 +18,19 @@ effects:
     chance: 0.5
     cooldown: 40
 levels:
-  '1':
-    chance: 25
+  1:
+    chance: 0.25
     effects:
       - AUTO_REEL
-  '2':
-    chance: 50
+  2:
+    chance: 0.5
     effects:
       - AUTO_REEL
-  '3':
-    chance: 75
+  3:
+    chance: 0.75
     effects:
       - AUTO_REEL
-  '4':
+  4:
+    chance: 1.0
     effects:
       - AUTO_REEL
