@@ -5,6 +5,7 @@ import com.moonrein.moonEnchant.model.AttributeModifierSpec;
 import com.moonrein.moonEnchant.model.EffectSpec;
 import com.moonrein.moonEnchant.model.EffectRecipient;
 import com.moonrein.moonEnchant.model.EnchantDefinition;
+import com.moonrein.moonEnchant.model.EnchantLevelConfig;
 import com.moonrein.moonEnchant.model.EnchantRarity;
 import com.moonrein.moonEnchant.model.EnchantTableRequirement;
 import com.moonrein.moonEnchant.model.EnchantTrigger;
@@ -12,10 +13,14 @@ import com.moonrein.moonEnchant.model.StackRule;
 import com.moonrein.moonEnchant.util.AttributeModifierFactory;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.OptionalDouble;
 import java.util.Set;
 import java.util.logging.Logger;
 import org.bukkit.attribute.Attribute;
@@ -69,12 +74,13 @@ public class EnchantConfigLoader {
         Set<String> conflicts = new HashSet<>(config.getStringList("conflicts"));
         List<AttributeModifierSpec> attributes = loadAttributes(file, config.getConfigurationSection("attributes"), id);
         List<EffectSpec> effects = loadEffects(file, config.getConfigurationSection("effects"));
+        Map<Integer, EnchantLevelConfig> levelConfigs = loadLevels(file, config.getConfigurationSection("levels"));
         double heatPerProc = config.getDouble("heat.per-proc", 0.0);
         double heatDecay = config.getDouble("heat.decay-per-second", 0.0);
         double heatMax = config.getDouble("heat.max", 0.0);
         EnchantTableRequirement tableRequirement = loadTableRequirement(config, rarity);
         return new EnchantDefinition(id, name, description, rarity, maxLevel, weight, slots, conflicts,
-            enchantSlotCost, attributes, effects, heatPerProc, heatDecay, heatMax, tableRequirement);
+            enchantSlotCost, attributes, effects, levelConfigs, heatPerProc, heatDecay, heatMax, tableRequirement);
     }
 
     private List<AttributeModifierSpec> loadAttributes(File file, ConfigurationSection section, String id) {
@@ -136,6 +142,30 @@ public class EnchantConfigLoader {
         return result;
     }
 
+    private Map<Integer, EnchantLevelConfig> loadLevels(File file, ConfigurationSection section) {
+        if (section == null) {
+            return Collections.emptyMap();
+        }
+        Map<Integer, EnchantLevelConfig> result = new HashMap<>();
+        for (String key : section.getKeys(false)) {
+            ConfigurationSection entry = section.getConfigurationSection(key);
+            if (entry == null) {
+                continue;
+            }
+            Integer level = parseLevelKey(file, key);
+            if (level == null) {
+                continue;
+            }
+            double chanceValue = entry.getDouble("chance", -1.0);
+            OptionalDouble chance = chanceValue < 0
+                ? OptionalDouble.empty()
+                : OptionalDouble.of(normalizeChance(file, "levels." + key + ".chance", chanceValue));
+            List<String> effects = entry.getStringList("effects");
+            result.put(level, new EnchantLevelConfig(chance, effects));
+        }
+        return result;
+    }
+
     private EffectRecipient defaultRecipient(EnchantTrigger trigger) {
         return switch (trigger) {
             case ON_HIT, ON_PROJECTILE_HIT -> EffectRecipient.TARGET;
@@ -160,6 +190,36 @@ public class EnchantConfigLoader {
         if (value < 1) {
             warn(file, path, "Expected a positive integer, got: " + value);
             return fallback;
+        }
+        return value;
+    }
+
+    private Integer parseLevelKey(File file, String key) {
+        try {
+            int level = Integer.parseInt(key);
+            if (level < 1) {
+                warn(file, "levels." + key, "Expected a positive level, got: " + level);
+                return null;
+            }
+            return level;
+        } catch (NumberFormatException ex) {
+            warn(file, "levels." + key, "Invalid level key, expected integer.");
+            return null;
+        }
+    }
+
+    private double normalizeChance(File file, String path, double value) {
+        if (value < 0) {
+            warn(file, path, "Expected chance >= 0, got: " + value);
+            return 0.0;
+        }
+        if (value > 1.0) {
+            double normalized = value / 100.0;
+            if (normalized > 1.0) {
+                warn(file, path, "Chance exceeds 100%, got: " + value);
+                return 1.0;
+            }
+            return normalized;
         }
         return value;
     }

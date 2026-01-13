@@ -2,6 +2,7 @@ package com.moonrein.moonEnchant.model;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import org.bukkit.inventory.EquipmentSlot;
@@ -18,6 +19,7 @@ public class EnchantDefinition {
     private final int enchantSlotCost;
     private final List<AttributeModifierSpec> attributeModifiers;
     private final List<EffectSpec> effects;
+    private final Map<Integer, EnchantLevelConfig> levelConfigs;
     private final double heatPerProc;
     private final double heatDecayPerSecond;
     private final double heatMax;
@@ -27,6 +29,7 @@ public class EnchantDefinition {
                               int maxLevel, int weight, Set<EquipmentSlot> supportedSlots,
                               Set<String> conflicts, int enchantSlotCost,
                               List<AttributeModifierSpec> attributeModifiers, List<EffectSpec> effects,
+                              Map<Integer, EnchantLevelConfig> levelConfigs,
                               double heatPerProc, double heatDecayPerSecond, double heatMax,
                               EnchantTableRequirement tableRequirement) {
         this.id = Objects.requireNonNull(id, "id");
@@ -40,6 +43,7 @@ public class EnchantDefinition {
         this.enchantSlotCost = enchantSlotCost;
         this.attributeModifiers = List.copyOf(attributeModifiers);
         this.effects = List.copyOf(effects);
+        this.levelConfigs = Map.copyOf(levelConfigs);
         this.heatPerProc = heatPerProc;
         this.heatDecayPerSecond = heatDecayPerSecond;
         this.heatMax = heatMax;
@@ -88,6 +92,10 @@ public class EnchantDefinition {
 
     public List<EffectSpec> getEffects() {
         return Collections.unmodifiableList(effects);
+    }
+
+    public Map<Integer, EnchantLevelConfig> getLevelConfigs() {
+        return Collections.unmodifiableMap(levelConfigs);
     }
 
     public double getHeatPerProc() {
