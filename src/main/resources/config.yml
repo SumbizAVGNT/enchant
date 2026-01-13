@@ -9,3 +9,16 @@ limits:
 ui:
   debug-actionbar: true
 
+sources:
+  enchanting-table:
+    enabled: true
+    allowed-biomes: []
+    blocked-biomes: []
+  fishing:
+    enabled: true
+    allowed-biomes: []
+    blocked-biomes: []
+  loot:
+    enabled: true
+  villagers:
+    enabled: true
