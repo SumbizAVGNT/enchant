@@ -1,0 +1,25 @@
+smelting:
+  display: '{#f0f064}Переплавка'
+  description: |-
+
+    &f Шанс на автоматическую переплавку
+    &f только что добытой руды.
+  applies-to: Кирок
+  type: MINING
+  group: SIMPLE
+  applies:
+    - ALL_PICKAXE
+    - ALL_SHOVEL
+  levels:
+    '1':
+      chance: 33
+      effects:
+        - SMELT
+    '2':
+      chance: 66
+      effects:
+        - SMELT
+    '3':
+      chance: 100
+      effects:
+        - SMELT

@@ -1,0 +1,15 @@
+overload:
+  display: '{#f0f064}Перегруз'
+  description: |-
+
+    &f При экипировке добавляет
+    &f дополнительные HP.
+  applies-to: Брони
+  type: EFFECT_STATIC
+  group: LEGENDARY
+  applies:
+    - ALL_ARMOR
+  levels:
+    '1': {}
+    '2': {}
+    '3': {}

@@ -1,0 +1,23 @@
+hook:
+  display: '{#f0f064}Крючок'
+  description: |-
+
+    &f Увеличивает получаемый опыт от рыбалки.
+  applies-to: Удочка
+  type: CATCH_FISH
+  group: ELITE
+  applies:
+    - FISHING_ROD
+  levels:
+    '1':
+      chance: 40
+      effects:
+        - EXP:%exp%
+    '2':
+      chance: 70
+      effects:
+        - EXP:%exp%
+    '3':
+      chance: 99
+      effects:
+        - EXP:%exp%
