@@ -16,3 +16,13 @@ effects:
     duration: 100
     chance: 0.3
     cooldown: 40
+levels:
+  1:
+    effects:
+      - poison_effect
+  2:
+    effects:
+      - poison_effect
+  3:
+    effects:
+      - poison_effect

@@ -17,3 +17,16 @@ effects:
     duration: 60
     chance: 0.6
     cooldown: 40
+levels:
+  1:
+    effects:
+      - telepathy_luck
+  2:
+    effects:
+      - telepathy_luck
+  3:
+    effects:
+      - telepathy_luck
+  4:
+    effects:
+      - telepathy_luck

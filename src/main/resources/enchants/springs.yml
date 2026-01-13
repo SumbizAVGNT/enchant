@@ -17,3 +17,13 @@ effects:
     duration: 120
     chance: 1.0
     cooldown: 0
+levels:
+  1:
+    effects:
+      - springs_jump
+  2:
+    effects:
+      - springs_jump
+  3:
+    effects:
+      - springs_jump

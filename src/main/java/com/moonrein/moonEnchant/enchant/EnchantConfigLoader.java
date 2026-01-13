@@ -137,7 +137,7 @@ public class EnchantConfigLoader {
             boolean ambient = entry.getBoolean("ambient", true);
             boolean particles = entry.getBoolean("particles", true);
             boolean icon = entry.getBoolean("icon", true);
-            result.add(new EffectSpec(trigger, recipient, type, amplifier, duration, chance, cooldown, ambient, particles, icon));
+            result.add(new EffectSpec(key, trigger, recipient, type, amplifier, duration, chance, cooldown, ambient, particles, icon));
         }
         return result;
     }

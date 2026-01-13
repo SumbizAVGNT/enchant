@@ -17,3 +17,25 @@ effects:
     duration: 60
     chance: 0.35
     cooldown: 40
+levels:
+  1:
+    effects:
+      - orbit_slow
+  2:
+    effects:
+      - orbit_slow
+  3:
+    effects:
+      - orbit_slow
+  4:
+    effects:
+      - orbit_slow
+  5:
+    effects:
+      - orbit_slow
+  6:
+    effects:
+      - orbit_slow
+  7:
+    effects:
+      - orbit_slow

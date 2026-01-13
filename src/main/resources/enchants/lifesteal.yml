@@ -17,3 +17,19 @@ effects:
     duration: 60
     chance: 0.2
     cooldown: 80
+levels:
+  1:
+    effects:
+      - lifesteal_regen
+  2:
+    effects:
+      - lifesteal_regen
+  3:
+    effects:
+      - lifesteal_regen
+  4:
+    effects:
+      - lifesteal_regen
+  5:
+    effects:
+      - lifesteal_regen

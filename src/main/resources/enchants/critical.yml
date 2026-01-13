@@ -17,3 +17,13 @@ effects:
     duration: 120
     chance: 1.0
     cooldown: 0
+levels:
+  1:
+    effects:
+      - critical_strength
+  2:
+    effects:
+      - critical_strength
+  3:
+    effects:
+      - critical_strength

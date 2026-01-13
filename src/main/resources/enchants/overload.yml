@@ -19,3 +19,10 @@ attributes:
     operation: ADD_NUMBER
     slot: HEAD
     stack-rule: MAX_LEVEL
+levels:
+  1:
+    effects: []
+  2:
+    effects: []
+  3:
+    effects: []

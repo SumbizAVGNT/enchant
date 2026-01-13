@@ -20,3 +20,13 @@ effects:
     duration: 80
     chance: 0.35
     cooldown: 80
+levels:
+  1:
+    effects:
+      - veinminer_haste
+  2:
+    effects:
+      - veinminer_haste
+  3:
+    effects:
+      - veinminer_haste
