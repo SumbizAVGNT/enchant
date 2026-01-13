@@ -23,6 +23,7 @@ public final class MoonEnchant extends JavaPlugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
+        saveResource("config/enchant.yml", false);
         File enchantFolder = new File(getDataFolder(), "enchants");
         String[] defaultEnchants = {
             "enchants/rift_edge.yml",
