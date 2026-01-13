@@ -21,12 +21,14 @@ public class EnchantDefinition {
     private final double heatPerProc;
     private final double heatDecayPerSecond;
     private final double heatMax;
+    private final EnchantTableRequirement tableRequirement;
 
     public EnchantDefinition(String id, String name, List<String> description, EnchantRarity rarity,
                               int maxLevel, int weight, Set<EquipmentSlot> supportedSlots,
                               Set<String> conflicts, int enchantSlotCost,
                               List<AttributeModifierSpec> attributeModifiers, List<EffectSpec> effects,
-                              double heatPerProc, double heatDecayPerSecond, double heatMax) {
+                              double heatPerProc, double heatDecayPerSecond, double heatMax,
+                              EnchantTableRequirement tableRequirement) {
         this.id = Objects.requireNonNull(id, "id");
         this.name = Objects.requireNonNull(name, "name");
         this.description = List.copyOf(description);
@@ -41,6 +43,7 @@ public class EnchantDefinition {
         this.heatPerProc = heatPerProc;
         this.heatDecayPerSecond = heatDecayPerSecond;
         this.heatMax = heatMax;
+        this.tableRequirement = Objects.requireNonNull(tableRequirement, "tableRequirement");
     }
 
     public String getId() {
@@ -97,5 +100,9 @@ public class EnchantDefinition {
 
     public double getHeatMax() {
         return heatMax;
+    }
+
+    public EnchantTableRequirement getTableRequirement() {
+        return tableRequirement;
     }
 }
