@@ -2,8 +2,8 @@ inquisitive:
   display: '{#f0f064}Любознательность'
   description: |-
 
-    &f Повышенное получение EXP
-    &f за любых убийство мобов.
+    &f Повышает получение EXP
+    &f за любые убийства мобов.
   applies-to: Мечей
   type: KILL_MOB
   group: ULTIMATE
