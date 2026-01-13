@@ -1,15 +1,21 @@
-overload:
-  display: '{#f0f064}Перегруз'
-  description: |-
-
-    &f При экипировке добавляет
-    &f дополнительные HP.
-  applies-to: Брони
-  type: EFFECT_STATIC
-  group: LEGENDARY
-  applies:
-    - ALL_ARMOR
-  levels:
-    '1': {}
-    '2': {}
-    '3': {}
+id: overload
+name: Перегруз
+description:
+  - "При экипировке добавляет"
+  - "дополнительные HP."
+rarity: legendary
+max-level: 3
+weight: 3
+enchant-slot-cost: 1
+supported-slots:
+  - HEAD
+  - CHEST
+  - LEGS
+  - FEET
+attributes:
+  health:
+    attribute: GENERIC_MAX_HEALTH
+    amount: 1.0
+    operation: ADD_NUMBER
+    slot: HEAD
+    stack-rule: MAX_LEVEL

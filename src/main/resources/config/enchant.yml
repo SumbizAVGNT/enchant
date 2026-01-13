@@ -1,0 +1,10 @@
+limits:
+  max-procs-per-second: 6
+  max-radius: 12
+  max-effect-stacks: 3
+  anti-afk:
+    enabled: true
+    min-movement: 0.02
+
+ui:
+  debug-actionbar: true
