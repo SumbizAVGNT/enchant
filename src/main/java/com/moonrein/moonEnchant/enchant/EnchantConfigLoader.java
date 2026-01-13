@@ -1,9 +1,11 @@
 package com.moonrein.moonEnchant.enchant;
 
+import com.moonrein.moonEnchant.config.EnchantSettings;
 import com.moonrein.moonEnchant.model.AttributeModifierSpec;
 import com.moonrein.moonEnchant.model.EffectSpec;
 import com.moonrein.moonEnchant.model.EnchantDefinition;
 import com.moonrein.moonEnchant.model.EnchantRarity;
+import com.moonrein.moonEnchant.model.EnchantTableRequirement;
 import com.moonrein.moonEnchant.model.EnchantTrigger;
 import com.moonrein.moonEnchant.model.StackRule;
 import com.moonrein.moonEnchant.util.AttributeModifierFactory;
@@ -21,6 +23,11 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.potion.PotionEffectType;
 
 public class EnchantConfigLoader {
+    private final EnchantSettings settings;
+
+    public EnchantConfigLoader(EnchantSettings settings) {
+        this.settings = settings;
+    }
 
     public List<EnchantDefinition> loadAll(File folder) {
         List<EnchantDefinition> result = new ArrayList<>();
@@ -56,8 +63,9 @@ public class EnchantConfigLoader {
         double heatPerProc = config.getDouble("heat.per-proc", 0.0);
         double heatDecay = config.getDouble("heat.decay-per-second", 0.0);
         double heatMax = config.getDouble("heat.max", 0.0);
+        EnchantTableRequirement tableRequirement = loadTableRequirement(config, rarity);
         return new EnchantDefinition(id, name, description, rarity, maxLevel, weight, slots, conflicts,
-            enchantSlotCost, attributes, effects, heatPerProc, heatDecay, heatMax);
+            enchantSlotCost, attributes, effects, heatPerProc, heatDecay, heatMax, tableRequirement);
     }
 
     private List<AttributeModifierSpec> loadAttributes(ConfigurationSection section, String id) {
@@ -107,5 +115,18 @@ public class EnchantConfigLoader {
             result.add(new EffectSpec(trigger, type, amplifier, duration, chance, cooldown, ambient, particles, icon));
         }
         return result;
+    }
+
+    private EnchantTableRequirement loadTableRequirement(YamlConfiguration config, EnchantRarity rarity) {
+        EnchantTableRequirement base = settings.getTableRequirement(rarity);
+        ConfigurationSection section = config.getConfigurationSection("table");
+        if (section == null) {
+            return base;
+        }
+        boolean enabled = settings.isEnchantingTableEnabled() && section.getBoolean("enabled", base.enabled());
+        int minLevel = section.getInt("min-level", base.minLevel());
+        int maxLevel = section.getInt("max-level", base.maxLevel());
+        int minBookshelves = section.getInt("min-bookshelves", base.minBookshelves());
+        return new EnchantTableRequirement(enabled, minLevel, maxLevel, minBookshelves);
     }
 }

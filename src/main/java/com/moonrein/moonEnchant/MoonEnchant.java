@@ -1,6 +1,8 @@
 package com.moonrein.moonEnchant;
 
 import com.moonrein.moonEnchant.command.EnchantCommand;
+import com.moonrein.moonEnchant.config.EnchantSettings;
+import com.moonrein.moonEnchant.config.EnchantSettingsLoader;
 import com.moonrein.moonEnchant.enchant.EnchantConfigLoader;
 import com.moonrein.moonEnchant.enchant.EnchantRegistry;
 import com.moonrein.moonEnchant.listener.EnchantListener;
@@ -25,6 +27,7 @@ public final class MoonEnchant extends JavaPlugin {
         saveDefaultConfig();
         saveResource("config/enchant.yml", false);
         File enchantFolder = new File(getDataFolder(), "enchants");
+        File settingsFile = new File(getDataFolder(), "config/enchant.yml");
         String[] defaultEnchants = {
             "enchants/rift_edge.yml",
             "enchants/autoreel.yml",
@@ -51,7 +54,9 @@ public final class MoonEnchant extends JavaPlugin {
             saveResource(resource, false);
         }
 
-        EnchantConfigLoader loader = new EnchantConfigLoader();
+        EnchantSettingsLoader settingsLoader = new EnchantSettingsLoader();
+        EnchantSettings settings = settingsLoader.load(settingsFile);
+        EnchantConfigLoader loader = new EnchantConfigLoader(settings);
         registry = new EnchantRegistry();
         for (EnchantDefinition definition : loader.loadAll(enchantFolder)) {
             registry.register(definition);

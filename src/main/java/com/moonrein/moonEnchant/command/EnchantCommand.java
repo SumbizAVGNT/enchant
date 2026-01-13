@@ -33,12 +33,13 @@ public class EnchantCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0) {
-            sender.sendMessage(ChatColor.AQUA + "MoonEnchant commands: give, list, reload, debug, test");
+            sender.sendMessage(ChatColor.AQUA + "MoonEnchant commands: give, list, info, reload, debug, test");
             return true;
         }
         return switch (args[0].toLowerCase()) {
             case "give" -> handleGive(sender, args);
             case "list" -> handleList(sender);
+            case "info" -> handleInfo(sender, args);
             case "reload" -> handleReload(sender);
             case "debug" -> handleDebug(sender);
             case "test" -> handleTest(sender);
@@ -52,10 +53,13 @@ public class EnchantCommand implements CommandExecutor, TabCompleter {
     @Override
     public java.util.List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1) {
-            return java.util.List.of("give", "list", "reload", "debug", "test");
+            return java.util.List.of("give", "list", "info", "reload", "debug", "test");
         }
         if (args.length == 2 && args[0].equalsIgnoreCase("give")) {
             return Bukkit.getOnlinePlayers().stream().map(Player::getName).toList();
+        }
+        if (args.length == 2 && args[0].equalsIgnoreCase("info")) {
+            return registry.getAll().stream().map(EnchantDefinition::getId).toList();
         }
         if (args.length == 3 && args[0].equalsIgnoreCase("give")) {
             return registry.getAll().stream().map(EnchantDefinition::getId).toList();
@@ -97,6 +101,32 @@ public class EnchantCommand implements CommandExecutor, TabCompleter {
         target.getInventory().setItemInMainHand(item);
         service.refreshPlayer(target);
         sender.sendMessage(ChatColor.GREEN + "Applied " + definition.get().getName() + " to item.");
+        return true;
+    }
+
+    private boolean handleInfo(CommandSender sender, String[] args) {
+        if (args.length < 2) {
+            sender.sendMessage(ChatColor.RED + "Usage: /ce info <enchant>");
+            return true;
+        }
+        Optional<EnchantDefinition> definition = registry.getById(args[1]);
+        if (definition.isEmpty()) {
+            sender.sendMessage(ChatColor.RED + "Enchant not found.");
+            return true;
+        }
+        EnchantDefinition info = definition.get();
+        sender.sendMessage(ChatColor.AQUA + "Enchant info: " + info.getName());
+        sender.sendMessage(ChatColor.GRAY + "ID: " + info.getId());
+        sender.sendMessage(ChatColor.GRAY + "Rarity: " + info.getRarity());
+        sender.sendMessage(ChatColor.GRAY + "Max level: " + info.getMaxLevel());
+        sender.sendMessage(ChatColor.GRAY + "Enchant slots: " + info.getEnchantSlotCost());
+        if (info.getTableRequirement().enabled()) {
+            sender.sendMessage(ChatColor.GRAY + "Table level: " + info.getTableRequirement().minLevel()
+                + "-" + info.getTableRequirement().maxLevel());
+            sender.sendMessage(ChatColor.GRAY + "Min bookshelves: " + info.getTableRequirement().minBookshelves());
+        } else {
+            sender.sendMessage(ChatColor.GRAY + "Table: disabled");
+        }
         return true;
     }
 
