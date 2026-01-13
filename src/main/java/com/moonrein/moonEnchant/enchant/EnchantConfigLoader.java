@@ -29,6 +29,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.Registry;
 
 public class EnchantConfigLoader {
     private final EnchantSettings settings;
@@ -97,8 +98,8 @@ public class EnchantConfigLoader {
             if ("GENERIC_ATTACK_DAMAGE".equalsIgnoreCase(attributeName)) {
                 attributeName = "ATTACK_DAMAGE";
             }
-            Attribute attribute = readEnum(file, "attributes." + key + ".attribute",
-                attributeName, Attribute.class, Attribute.ATTACK_DAMAGE);
+            Attribute attribute = readAttribute(file, "attributes." + key + ".attribute",
+                attributeName, Attribute.ATTACK_DAMAGE);
             double amount = entry.getDouble("amount", 0.0);
             AttributeModifier.Operation operation = readEnum(file, "attributes." + key + ".operation",
                 entry.getString("operation", "ADD_NUMBER"), AttributeModifier.Operation.class,
@@ -239,6 +240,28 @@ public class EnchantConfigLoader {
             warn(file, path, "Invalid value '" + value + "', expected one of " + enumOptions(type));
             return fallback;
         }
+    }
+
+    private Attribute readAttribute(File file, String path, String value, Attribute fallback) {
+        if (value == null) {
+            warn(file, path, "Missing value, expected one of " + attributeOptions());
+            return fallback;
+        }
+        try {
+            return Attribute.valueOf(value.trim().toUpperCase(Locale.ROOT));
+        } catch (IllegalArgumentException ex) {
+            warn(file, path, "Invalid value '" + value + "', expected one of " + attributeOptions());
+            return fallback;
+        }
+    }
+
+    private String attributeOptions() {
+        List<String> names = new ArrayList<>();
+        for (Attribute attribute : Registry.ATTRIBUTE) {
+            names.add(attribute.getKey().getKey().toUpperCase(Locale.ROOT));
+        }
+        Collections.sort(names);
+        return names.toString();
     }
 
     private String enumOptions(Class<? extends Enum<?>> type) {
