@@ -1,88 +1,22 @@
-veinminer:
-  display: '{#f0f064}Жилакопатель'
-  description: |-
-
-    &f Добывает всю жилу руды.
-    &f Нельзя использовать с зачарованием Траншея.
-  applies-to: Кирки
-  type: MINING
-  group: FABLED
-  applies:
-    - ALL_PICKAXE
-  levels:
-    '1':
-      chance: 15
-      cooldown: 4
-      settings:
-        whitelist:
-          - COAL_ORE
-          - COPPER_ORE
-          - IRON_ORE
-          - GOLD_ORE
-          - LAPIS_ORE
-          - REDSTONE_ORE
-          - DIAMOND_ORE
-          - EMERALD_ORE
-          - NETHER_QUARTZ_ORE
-          - NETHER_GOLD_ORE
-          - ANCIENT_DEBRIS
-          - DEEPSLATE_COAL_ORE
-          - DEEPSLATE_COPPER_ORE
-          - DEEPSLATE_IRON_ORE
-          - DEEPSLATE_GOLD_ORE
-          - DEEPSLATE_LAPIS_ORE
-          - DEEPSLATE_REDSTONE_ORE
-          - DEEPSLATE_DIAMOND_ORE
-          - DEEPSLATE_EMERALD_ORE
-      effects:
-        - BREAK_BLOCK @Veinmine
-    '2':
-      chance: 35
-      cooldown: 3
-      settings:
-        whitelist:
-          - COAL_ORE
-          - COPPER_ORE
-          - IRON_ORE
-          - GOLD_ORE
-          - LAPIS_ORE
-          - REDSTONE_ORE
-          - DIAMOND_ORE
-          - EMERALD_ORE
-          - NETHER_QUARTZ_ORE
-          - NETHER_GOLD_ORE
-          - ANCIENT_DEBRIS
-          - DEEPSLATE_COAL_ORE
-          - DEEPSLATE_COPPER_ORE
-          - DEEPSLATE_IRON_ORE
-          - DEEPSLATE_GOLD_ORE
-          - DEEPSLATE_LAPIS_ORE
-          - DEEPSLATE_REDSTONE_ORE
-          - DEEPSLATE_DIAMOND_ORE
-          - DEEPSLATE_EMERALD_ORE
-      effects:
-        - BREAK_BLOCK @Veinmine
-    '3':
-      settings:
-        whitelist:
-          - COAL_ORE
-          - COPPER_ORE
-          - IRON_ORE
-          - GOLD_ORE
-          - LAPIS_ORE
-          - REDSTONE_ORE
-          - DIAMOND_ORE
-          - EMERALD_ORE
-          - NETHER_QUARTZ_ORE
-          - NETHER_GOLD_ORE
-          - ANCIENT_DEBRIS
-          - DEEPSLATE_COAL_ORE
-          - DEEPSLATE_COPPER_ORE
-          - DEEPSLATE_IRON_ORE
-          - DEEPSLATE_GOLD_ORE
-          - DEEPSLATE_LAPIS_ORE
-          - DEEPSLATE_REDSTONE_ORE
-          - DEEPSLATE_DIAMOND_ORE
-          - DEEPSLATE_EMERALD_ORE
-      effects:
-        - BREAK_BLOCK @Veinmine
+id: veinminer
+name: Жилакопатель
+description:
+  - "Шанс значительно ускорить добычу руды."
+  - "Не совмещается с Траншеей."
+rarity: legendary
+max-level: 3
+weight: 2
+enchant-slot-cost: 1
+supported-slots:
+  - HAND
+conflicts:
+  - trench
+effects:
+  veinminer_haste:
+    trigger: ON_MINE
+    recipient: SELF
+    type: FAST_DIGGING
+    amplifier: 2
+    duration: 80
+    chance: 0.35
+    cooldown: 80

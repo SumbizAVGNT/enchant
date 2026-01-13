@@ -1,23 +1,19 @@
-hook:
-  display: '{#f0f064}Крючок'
-  description: |-
-
-    &f Увеличивает получаемый опыт от рыбалки.
-  applies-to: Удочка
-  type: CATCH_FISH
-  group: ELITE
-  applies:
-    - FISHING_ROD
-  levels:
-    '1':
-      chance: 40
-      effects:
-        - EXP:%exp%
-    '2':
-      chance: 70
-      effects:
-        - EXP:%exp%
-    '3':
-      chance: 99
-      effects:
-        - EXP:%exp%
+id: hook
+name: Крючок
+description:
+  - "Повышает получаемый опыт от рыбалки."
+rarity: rare
+max-level: 3
+weight: 2
+enchant-slot-cost: 1
+supported-slots:
+  - HAND
+effects:
+  hook_luck:
+    trigger: ON_FISH
+    recipient: SELF
+    type: LUCK
+    amplifier: 0
+    duration: 120
+    chance: 0.75
+    cooldown: 40

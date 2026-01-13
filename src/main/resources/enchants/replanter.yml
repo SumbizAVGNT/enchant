@@ -1,17 +1,19 @@
-replanter:
-  display: '{#f0f064}Пересев'
-  description: |-
-
-    &f Пересаживает урожай при его сборе.
-  applies-to: Мотыги
-  type: MINING
-  group: UNIQUE
-  applies:
-    - ALL_HOE
-  levels:
-    '1':
-      conditions:
-        - '%is crop% = false : %stop%'
-        - '%is fully grown% = false : %stop%'
-      effects:
-        - PLANT_SEEDS:0:%block drop type%
+id: replanter
+name: Пересев
+description:
+  - "Шанс ускорить сбор урожая при добыче."
+rarity: rare
+max-level: 1
+weight: 1
+enchant-slot-cost: 1
+supported-slots:
+  - HAND
+effects:
+  replanter_saturation:
+    trigger: ON_MINE
+    recipient: SELF
+    type: SATURATION
+    amplifier: 0
+    duration: 20
+    chance: 0.2
+    cooldown: 80

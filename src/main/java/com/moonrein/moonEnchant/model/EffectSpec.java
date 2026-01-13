@@ -5,6 +5,7 @@ import org.bukkit.potion.PotionEffectType;
 
 public class EffectSpec {
     private final EnchantTrigger trigger;
+    private final EffectRecipient recipient;
     private final PotionEffectType type;
     private final int amplifier;
     private final int durationTicks;
@@ -14,9 +15,11 @@ public class EffectSpec {
     private final boolean particles;
     private final boolean icon;
 
-    public EffectSpec(EnchantTrigger trigger, PotionEffectType type, int amplifier, int durationTicks,
-                      double chance, long cooldownTicks, boolean ambient, boolean particles, boolean icon) {
+    public EffectSpec(EnchantTrigger trigger, EffectRecipient recipient, PotionEffectType type, int amplifier,
+                      int durationTicks, double chance, long cooldownTicks, boolean ambient, boolean particles,
+                      boolean icon) {
         this.trigger = Objects.requireNonNull(trigger, "trigger");
+        this.recipient = Objects.requireNonNull(recipient, "recipient");
         this.type = Objects.requireNonNull(type, "type");
         this.amplifier = amplifier;
         this.durationTicks = durationTicks;
@@ -29,6 +32,10 @@ public class EffectSpec {
 
     public EnchantTrigger getTrigger() {
         return trigger;
+    }
+
+    public EffectRecipient getRecipient() {
+        return recipient;
     }
 
     public PotionEffectType getType() {

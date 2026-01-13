@@ -1,27 +1,19 @@
-critical:
-  display: '{#f0f064}Критический Урон'
-  description: |-
-
-    &f Увеличение урона, наносимого
-    &f критическим ударом.
-  applies-to: Мечей
-  type: ATTACK_MOB;ATTACK
-  group: ULTIMATE
-  applies:
-    - ALL_SWORD
-  levels:
-    '1':
-      conditions:
-        - '%is critical% = true : %allow%'
-      effects:
-        - INCREASE_DAMAGE:30
-    '2':
-      conditions:
-        - '%is critical% = true : %allow%'
-      effects:
-        - INCREASE_DAMAGE:40
-    '3':
-      conditions:
-        - '%is critical% = true : %allow%'
-      effects:
-        - INCREASE_DAMAGE:50
+id: critical
+name: Критический урон
+description:
+  - "Повышает наносимый урон при экипировке."
+rarity: epic
+max-level: 3
+weight: 2
+enchant-slot-cost: 1
+supported-slots:
+  - HAND
+effects:
+  critical_strength:
+    trigger: PASSIVE
+    recipient: SELF
+    type: INCREASE_DAMAGE
+    amplifier: 0
+    duration: 120
+    chance: 1.0
+    cooldown: 0

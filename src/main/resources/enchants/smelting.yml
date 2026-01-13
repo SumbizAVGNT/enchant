@@ -1,25 +1,19 @@
-smelting:
-  display: '{#f0f064}Переплавка'
-  description: |-
-
-    &f Шанс на автоматическую переплавку
-    &f только что добытой руды.
-  applies-to: Кирок
-  type: MINING
-  group: SIMPLE
-  applies:
-    - ALL_PICKAXE
-    - ALL_SHOVEL
-  levels:
-    '1':
-      chance: 33
-      effects:
-        - SMELT
-    '2':
-      chance: 66
-      effects:
-        - SMELT
-    '3':
-      chance: 100
-      effects:
-        - SMELT
+id: smelting
+name: Переплавка
+description:
+  - "Шанс получить огнестойкость при добыче руды."
+rarity: common
+max-level: 3
+weight: 1
+enchant-slot-cost: 1
+supported-slots:
+  - HAND
+effects:
+  smelting_fire_resistance:
+    trigger: ON_MINE
+    recipient: SELF
+    type: FIRE_RESISTANCE
+    amplifier: 0
+    duration: 100
+    chance: 0.3
+    cooldown: 60

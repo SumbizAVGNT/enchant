@@ -2,6 +2,7 @@ package com.moonrein.moonEnchant.service;
 
 import com.moonrein.moonEnchant.enchant.EnchantRegistry;
 import com.moonrein.moonEnchant.model.AttributeModifierSpec;
+import com.moonrein.moonEnchant.model.EffectRecipient;
 import com.moonrein.moonEnchant.model.EffectSpec;
 import com.moonrein.moonEnchant.model.EnchantDefinition;
 import com.moonrein.moonEnchant.model.EnchantTrigger;
@@ -94,6 +95,14 @@ public class EnchantService {
 
     public void handleTakeDamage(Player player, LivingEntity source) {
         scheduleTrigger(player, source, EnchantTrigger.ON_TAKE_DAMAGE);
+    }
+
+    public void handleMine(Player player) {
+        scheduleTrigger(player, null, EnchantTrigger.ON_MINE);
+    }
+
+    public void handleFish(Player player) {
+        scheduleTrigger(player, null, EnchantTrigger.ON_FISH);
     }
 
     public void toggleDebug(Player player) {
@@ -239,15 +248,19 @@ public class EnchantService {
         if (state == null) {
             return;
         }
-        LivingEntity recipient = player;
-        if (result.trigger() == EnchantTrigger.ON_HIT && result.targetId() != null) {
+        LivingEntity target = null;
+        if (result.targetId() != null) {
             var entity = Bukkit.getEntity(result.targetId());
             if (entity instanceof LivingEntity living) {
-                recipient = living;
+                target = living;
             }
         }
         for (EffectApplication application : result.applications()) {
             EffectSpec effect = application.effect();
+            LivingEntity recipient = effect.getRecipient() == EffectRecipient.TARGET ? target : player;
+            if (recipient == null) {
+                continue;
+            }
             PotionEffect potionEffect = new PotionEffect(effect.getType(), effect.getDurationTicks(),
                 effect.getAmplifier(), effect.isAmbient(), effect.hasParticles(), effect.hasIcon());
             recipient.addPotionEffect(potionEffect, true);

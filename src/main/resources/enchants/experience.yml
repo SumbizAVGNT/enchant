@@ -1,43 +1,19 @@
-experience:
-  display: '{#f0f064}Опыт'
-  description: |-
-
-    &f Шанс получить больше опыта из руды.
-  applies-to: Инструменты
-  type: MINING
-  group: SIMPLE
-  applies:
-    - ALL_PICKAXE
-    - ALL_SPADE
-    - ALL_AXE
-  levels:
-    '1':
-      chance: 15
-      conditions:
-        - '%block type% contains ORE : %allow%'
-      effects:
-        - EXP:<random number>2-5</random number> @Block
-    '2':
-      chance: 30
-      conditions:
-        - '%block type% contains ORE : %allow%'
-      effects:
-        - EXP:<random number>2-5</random number>
-    '3':
-      chance: 45
-      conditions:
-        - '%block type% contains ORE : %allow%'
-      effects:
-        - EXP:<random number>2-5</random number> @Block
-    '4':
-      chance: 60
-      conditions:
-        - '%block type% contains ORE : %allow%'
-      effects:
-        - EXP:<random number>2-5</random number> @Block
-    '5':
-      chance: 75
-      conditions:
-        - '%block type% contains ORE : %allow%'
-      effects:
-        - EXP:<random number>2-5</random number> @Block
+id: experience
+name: Опыт
+description:
+  - "Шанс получить больше опыта при добыче ресурсов."
+rarity: common
+max-level: 5
+weight: 1
+enchant-slot-cost: 1
+supported-slots:
+  - HAND
+effects:
+  mining_luck:
+    trigger: ON_MINE
+    recipient: SELF
+    type: LUCK
+    amplifier: 0
+    duration: 80
+    chance: 0.4
+    cooldown: 20
