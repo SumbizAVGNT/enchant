@@ -21,6 +21,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.ThreadLocalRandom;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
@@ -28,6 +29,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -122,6 +124,7 @@ public class EnchantService {
 
     public void setItemEnchantments(ItemStack itemStack, Map<String, Integer> enchantments) {
         storage.setEnchantments(itemStack, enchantments);
+        updateItemVisuals(itemStack, enchantments);
     }
 
     private void applyAttributeModifiers(Player player, Map<String, List<EnchantLevelSlot>> enchantLevels) {
@@ -131,7 +134,13 @@ public class EnchantService {
                 continue;
             }
             for (AttributeModifierSpec spec : definition.getAttributeModifiers()) {
-                int effectiveLevel = resolveLevel(spec.getStackRule(), entry.getValue());
+                List<EnchantLevelSlot> matchingSlots = entry.getValue().stream()
+                    .filter(levelSlot -> levelSlot.slot() == spec.getSlot())
+                    .toList();
+                if (matchingSlots.isEmpty()) {
+                    continue;
+                }
+                int effectiveLevel = resolveLevel(spec.getStackRule(), matchingSlots);
                 if (effectiveLevel <= 0) {
                     continue;
                 }
@@ -139,11 +148,69 @@ public class EnchantService {
                 if (instance == null) {
                     continue;
                 }
+                AttributeModifier existing = instance.getModifier(spec.getUuid());
+                if (existing != null) {
+                    instance.removeModifier(existing);
+                }
                 double amount = spec.getAmount() * effectiveLevel;
                 AttributeModifier modifier = new AttributeModifier(spec.getUuid(), spec.getName(), amount, spec.getOperation(), spec.getSlot());
                 instance.addModifier(modifier);
             }
         }
+    }
+
+    private void updateItemVisuals(ItemStack itemStack, Map<String, Integer> enchantments) {
+        if (itemStack == null) {
+            return;
+        }
+        ItemMeta meta = itemStack.getItemMeta();
+        if (meta == null) {
+            return;
+        }
+        if (enchantments.isEmpty()) {
+            meta.setLore(null);
+            meta.setEnchantmentGlintOverride(false);
+            itemStack.setItemMeta(meta);
+            return;
+        }
+        List<EnchantDisplay> displays = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : enchantments.entrySet()) {
+            String id = entry.getKey();
+            int level = entry.getValue();
+            EnchantDefinition definition = registry.getById(id).orElse(null);
+            String name = definition != null ? definition.getName() : id;
+            List<String> description = definition != null ? definition.getDescription() : List.of();
+            displays.add(new EnchantDisplay(name, level, description));
+        }
+        displays.sort((left, right) -> left.name().compareToIgnoreCase(right.name()));
+        List<String> lore = new ArrayList<>();
+        for (EnchantDisplay display : displays) {
+            lore.add(ChatColor.LIGHT_PURPLE + display.name() + " " + formatLevel(display.level()));
+            for (String line : display.description()) {
+                if (line != null && !line.isBlank()) {
+                    lore.add(ChatColor.GRAY + line);
+                }
+            }
+        }
+        meta.setLore(lore);
+        meta.setEnchantmentGlintOverride(true);
+        itemStack.setItemMeta(meta);
+    }
+
+    private String formatLevel(int level) {
+        return switch (level) {
+            case 1 -> "I";
+            case 2 -> "II";
+            case 3 -> "III";
+            case 4 -> "IV";
+            case 5 -> "V";
+            case 6 -> "VI";
+            case 7 -> "VII";
+            case 8 -> "VIII";
+            case 9 -> "IX";
+            case 10 -> "X";
+            default -> String.valueOf(level);
+        };
     }
 
     private void removeExistingModifiers(Player player) {
@@ -376,5 +443,8 @@ public class EnchantService {
         List<EffectApplication> applications,
         List<DebugRecord> debugRecords
     ) {
+    }
+
+    private record EnchantDisplay(String name, int level, List<String> description) {
     }
 }
