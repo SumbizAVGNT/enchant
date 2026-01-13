@@ -93,8 +93,12 @@ public class EnchantConfigLoader {
             if (entry == null) {
                 continue;
             }
+            String attributeName = entry.getString("attribute", "ATTACK_DAMAGE");
+            if ("GENERIC_ATTACK_DAMAGE".equalsIgnoreCase(attributeName)) {
+                attributeName = "ATTACK_DAMAGE";
+            }
             Attribute attribute = readEnum(file, "attributes." + key + ".attribute",
-                entry.getString("attribute", "GENERIC_ATTACK_DAMAGE"), Attribute.class, Attribute.GENERIC_ATTACK_DAMAGE);
+                attributeName, Attribute.class, Attribute.ATTACK_DAMAGE);
             double amount = entry.getDouble("amount", 0.0);
             AttributeModifier.Operation operation = readEnum(file, "attributes." + key + ".operation",
                 entry.getString("operation", "ADD_NUMBER"), AttributeModifier.Operation.class,
